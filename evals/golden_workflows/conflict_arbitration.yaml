@@ -1,0 +1,16 @@
+case_id: conflict_arbitration
+task_prompt: Resolve the coder and reviewer deadlock on the sandbox patch.
+fixture_repo_or_docs: widget.py
+expected_agent_sequence:
+  - reviewer
+  - supervisor
+milestones:
+  - CONFLICT_ARBITRATION
+  - FINAL_OUTPUT
+required_tools: []
+forbidden_tools: []
+expected_citations: []
+expected_abstention: false
+max_steps: 8
+max_tokens: 300
+golden_steps: 2

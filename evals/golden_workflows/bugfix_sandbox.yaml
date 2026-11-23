@@ -1,0 +1,24 @@
+case_id: bugfix_sandbox
+task_prompt: make answer return 1
+fixture_repo_or_docs: widget.py
+expected_agent_sequence:
+  - researcher
+  - coder
+  - reviewer
+  - supervisor
+milestones:
+  - AGENT_DECISION
+  - MCP_TOOL_CALL
+  - CONSENSUS_VOTE
+  - FINAL_OUTPUT
+required_tools:
+  - read_file
+  - write_file_patch
+  - run_pytest_sandbox
+forbidden_tools: []
+expected_citations:
+  - widget-answer
+expected_abstention: false
+max_steps: 12
+max_tokens: 800
+golden_steps: 6

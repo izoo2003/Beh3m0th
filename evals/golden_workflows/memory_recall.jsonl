@@ -1,0 +1,2 @@
+{"step_index":0,"agent_name":"researcher","step_type":"MEMORY_RECALL","input_summary":"session 2","output_summary":"episodic bug fix from session 1","tokens_used":8,"latency_ms":1.0,"metadata":{"layer":"episodic"}}
+{"step_index":1,"agent_name":"researcher","step_type":"AGENT_DECISION","input_summary":"session 2","output_summary":"apply the recalled fix","tokens_used":6,"latency_ms":1.0,"metadata":{"status":"CODING"}}

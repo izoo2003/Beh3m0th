@@ -1,0 +1,3 @@
+{"step_index":0,"agent_name":"researcher","step_type":"RETRIEVAL","input_summary":"hop 1 auth entry","output_summary":"cited chunk-auth","tokens_used":12,"latency_ms":1.0,"metadata":{"citation":"chunk-auth"}}
+{"step_index":1,"agent_name":"researcher","step_type":"RETRIEVAL","input_summary":"hop 2 retry helper","output_summary":"cited chunk-retry","tokens_used":12,"latency_ms":1.0,"metadata":{"citation":"chunk-retry"}}
+{"step_index":2,"agent_name":"supervisor","step_type":"FINAL_OUTPUT","input_summary":"multi-hop question","output_summary":"auth calls retry","tokens_used":8,"latency_ms":1.0,"metadata":{"status":"COMPLETED"}}

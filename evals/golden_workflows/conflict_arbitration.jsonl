@@ -1,0 +1,2 @@
+{"step_index":0,"agent_name":"reviewer","step_type":"CONFLICT_ARBITRATION","input_summary":"split panel","output_summary":"ACCEPT_CODER","tokens_used":8,"latency_ms":1.0,"metadata":{"decision":"ACCEPT_CODER"}}
+{"step_index":1,"agent_name":"supervisor","step_type":"FINAL_OUTPUT","input_summary":"arbitrate","output_summary":"accepted coder","tokens_used":6,"latency_ms":1.0,"metadata":{"status":"COMPLETED","decision":"ACCEPT_CODER"}}

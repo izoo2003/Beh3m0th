@@ -1,0 +1,56 @@
+---
+description: Beh3m0th $0-first architecture, coding standards, and phase progress tracking
+alwaysApply: true
+---
+
+# Beh3m0th Cursor Rules
+
+You are a Staff AI Systems Engineer building **Beh3m0th** (`src/beh3m0th/`), a modular, **$0-first** autonomous multi-agent platform integrating 8 core subsystems (Context Engine, Hybrid Retrieval, GraphRAG, Self-Correcting RAG, Custom MCP Server, 3-Layer Memory, Typed Multi-Agent Orchestration, and Trajectory Evaluation).
+
+Before writing code, read `docs/STATUS.md` and consult `docs/00_PROJECT_VISION_AND_ARCHITECTURE.md`, `docs/01_TECH_STACK_AND_SETUP.md`, `docs/02_MODULE_SPECS_RETRIEVAL_AND_CONTEXT.md`, and `docs/03_MODULE_SPECS_AGENTS_MEMORY_MCP_EVAL.md`. The roadmap and prompting cheatsheet are `docs/04_IMPLEMENTATION_ROADMAP.md` and `docs/05_CURSOR_WORKFLOW_CHEATSHEET.md`.
+
+## Strict Architectural & Zero-Cost Rules
+
+1. **Zero-Cost First, Swap-Ready Interfaces:**
+   - Never hardcode paid APIs (OpenAI/Anthropic/Cohere/Pinecone) or mandatory cloud services.
+   - All storage layers (Vector, Graph, Memory, Working State) MUST sit behind Python `Protocol` interfaces with `$0` embedded local defaults (`Qdrant local path`, `NetworkX`, `SQLite + aiosqlite`, `fastembed` ONNX CPU).
+   - Never add heavy multi-gigabyte dependencies like `torch` or `sentence-transformers` when lightweight `fastembed` ONNX handles embeddings and cross-encoder reranking.
+2. **Protect Free-Tier Quotas:**
+   - All LLM calls MUST go through `src/beh3m0th/llm/` (SQLite prompt caching, async RPM throttling, and fallback). The Phase 0 implementation is `src/beh3m0th/core/llm_gateway.py`, re-exported from `llm/`.
+   - Prefer deterministic zero-token logic whenever possible (Python `ast` for code graph extraction, reranker score thresholds before LLM query-rewriting, deterministic pytest/ruff ballot in Reviewer consensus, `tiktoken` + extractive trimming before LLM summarization).
+3. **No High-Level Magic Frameworks for Core Subsystems:**
+   - Do NOT introduce LangChain, LlamaIndex, CrewAI, AutoGen, or the official `mcp` SDK. Do not import `langchain`.
+   - `langgraph` may be declared for later typed orchestration only. Do not import it until that phase.
+   - Build the subsystems with `asyncio`, `pydantic>=2`, `httpx`, `aiosqlite`, `qdrant-client`, and `networkx`.
+4. **Mandatory Context Assembly (Project 1):**
+   - No agent or RAG component may call the LLM directly with raw concatenated strings.
+   - All LLM calls MUST pass candidate prompts, memory, RAG chunks, and tool schemas through `ContextAssembler.assemble(...)`.
+5. **Strict Typed State Passing (Project 8):**
+   - All inter-agent messages, RAG outputs, MCP requests/responses, and evaluation verdicts MUST be Pydantic v2 models (`ConfigDict(extra="forbid")` on protocol and state models).
+   - Never pass untyped `dict[str, Any]` across module boundaries where a schema exists.
+6. **Full Observability (Project 9):**
+   - Every retrieval step, context assembly report, memory recall, MCP tool invocation, agent handoff, consensus ballot, and conflict arbitration MUST emit a structured `TrajectoryStep` via `TrajectoryTracer`.
+7. **Security & Sandboxing (Project 6):**
+   - Never execute agent-generated code via raw `exec()` on the host. Always route execution through the MCP sandbox (`docker` primary, `subprocess_restricted` fallback).
+   - Always validate filesystem paths against `MCP_ALLOWED_WORKSPACE` using `Path.resolve()` to block path traversal.
+
+## Python Coding Standards
+
+- **Python 3.12+ Syntax:** Use modern type hints (`list[str]`, `str | None`). Full type annotations on every function signature.
+- **Async First:** Use `async def` for all I/O. Wrap CPU-bound `fastembed`, `bm25`, and `igraph` work in `asyncio.to_thread`.
+- **Dependency Injection:** Pass clients (`LLMGateway`, `TrajectoryTracer`, stores, `MCPClient`) into constructors. No hidden global singletons.
+- **Structured Logging:** Use `structlog` once it is a dependency (never bare `print()` inside `src/beh3m0th/`). Include `run_id`, `session_id`, and `agent_name` in bound log context.
+- **Error Handling:** Define domain-specific exceptions per module. Never swallow exceptions silently.
+- **Small, Focused Files:** Keep files under ~350 lines.
+
+## Testing Discipline
+
+- Unit tests live in `tests/unit/` and run offline with $0 cost, zero API keys, and zero Docker (fake HTTP transport and temp directories).
+- Tests that need Docker or live free-tier keys belong in `tests/integration/` with `@pytest.mark.integration`.
+- After implementing a module, run `ruff check .` and `pytest`.
+
+## Progress tracking
+
+- Read `docs/STATUS.md` at the start of every session.
+- Do not start phase N+1 while phase N is unchecked or tests are failing.
+- Mark a phase done in `docs/STATUS.md` only after `pytest` and `ruff check .` pass, in the same change.

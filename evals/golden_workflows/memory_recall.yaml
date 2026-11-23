@@ -1,0 +1,15 @@
+case_id: memory_recall
+task_prompt: Apply the bug fix remembered from the previous session.
+fixture_repo_or_docs: session-1
+expected_agent_sequence:
+  - researcher
+milestones:
+  - MEMORY_RECALL
+  - AGENT_DECISION
+required_tools: []
+forbidden_tools: []
+expected_citations: []
+expected_abstention: false
+max_steps: 6
+max_tokens: 300
+golden_steps: 2

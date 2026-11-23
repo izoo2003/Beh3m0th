@@ -1,0 +1,6 @@
+{"step_index":0,"agent_name":"researcher","step_type":"AGENT_DECISION","input_summary":"make answer return 1","output_summary":"root cause in widget-answer","tokens_used":10,"latency_ms":1.0,"metadata":{"citation":"widget-answer","status":"CODING"}}
+{"step_index":1,"agent_name":"coder","step_type":"MCP_TOOL_CALL","input_summary":"read widget","output_summary":"read widget.py","tokens_used":4,"latency_ms":1.0,"metadata":{"tool":"read_file"}}
+{"step_index":2,"agent_name":"coder","step_type":"MCP_TOOL_CALL","input_summary":"patch return","output_summary":"patched return 1","tokens_used":4,"latency_ms":1.0,"metadata":{"tool":"write_file_patch"}}
+{"step_index":3,"agent_name":"coder","step_type":"MCP_TOOL_CALL","input_summary":"run tests","output_summary":"pytest passed","tokens_used":6,"latency_ms":2.0,"metadata":{"tool":"run_pytest_sandbox"}}
+{"step_index":4,"agent_name":"reviewer","step_type":"CONSENSUS_VOTE","input_summary":"review patch","output_summary":"approved","tokens_used":5,"latency_ms":1.0,"metadata":{"verdict":"APPROVE"}}
+{"step_index":5,"agent_name":"supervisor","step_type":"FINAL_OUTPUT","input_summary":"make answer return 1","output_summary":"completed fix","tokens_used":6,"latency_ms":1.0,"metadata":{"status":"COMPLETED"}}

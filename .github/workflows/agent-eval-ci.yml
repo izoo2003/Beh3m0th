@@ -1,0 +1,55 @@
+name: agent-eval
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled]
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Evaluation mode
+        type: choice
+        options:
+          - deterministic
+          - live
+        default: deterministic
+
+jobs:
+  deterministic:
+    if: github.event_name == 'pull_request' || github.event.inputs.mode == 'deterministic'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          uv venv --python 3.12
+          uv pip install -e ".[dev]"
+      - name: Lint
+        run: uv run ruff check .
+      - name: Unit tests
+        run: uv run pytest tests/unit
+      - name: Deterministic golden suite
+        run: uv run python evals/run_eval_suite.py --mode deterministic
+
+  live:
+    if: >-
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.mode == 'live') ||
+      (github.event_name == 'pull_request' &&
+       contains(github.event.pull_request.labels.*.name, 'run-live-evals'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          python-version: "3.12"
+      - name: Install
+        run: |
+          uv venv --python 3.12
+          uv pip install -e ".[dev]"
+      - name: Live judge scorecard
+        run: uv run python evals/run_eval_suite.py --mode live
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}

@@ -1,0 +1,19 @@
+case_id: multihop_graphrag
+task_prompt: Which module calls the retry helper two hops from the auth entrypoint?
+fixture_repo_or_docs: docs/auth.md
+expected_agent_sequence:
+  - researcher
+  - supervisor
+milestones:
+  - RETRIEVAL
+  - RETRIEVAL
+  - FINAL_OUTPUT
+required_tools: []
+forbidden_tools: []
+expected_citations:
+  - chunk-auth
+  - chunk-retry
+expected_abstention: false
+max_steps: 8
+max_tokens: 400
+golden_steps: 3

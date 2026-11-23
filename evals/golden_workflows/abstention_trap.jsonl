@@ -1,0 +1,2 @@
+{"step_index":0,"agent_name":"researcher","step_type":"AGENT_DECISION","input_summary":"unanswerable quota","output_summary":"research abstained","tokens_used":4,"latency_ms":1.0,"metadata":{"status":"ABSTAINED"}}
+{"step_index":1,"agent_name":"supervisor","step_type":"FINAL_OUTPUT","input_summary":"unanswerable quota","output_summary":"abstained: no grounded citation","tokens_used":4,"latency_ms":1.0,"metadata":{"status":"ABSTAINED"}}
