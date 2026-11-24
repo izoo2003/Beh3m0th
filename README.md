@@ -41,3 +41,53 @@ flowchart LR
     Subsystems --> Supervisor
     Supervisor --> Eval["Trajectory Tracer & Eval<br/>(JSONL / SQLite / Golden Workflows)"]
 ```
+
+---
+
+## Screenshots
+
+Offline Streamlit demos. Each page runs on this machine with sample data.
+
+### Phase list
+
+![Phase list](pics/b1.PNG)
+
+### Context budget
+
+![Context budget form](pics/b2.PNG)
+
+![Context assembly result](pics/b2.5.PNG)
+
+### Hybrid search
+
+![Hybrid search query](pics/b3.PNG)
+
+![Hybrid search hits](pics/b3.5.PNG)
+
+### GraphRAG
+
+![Two-hop graph query](pics/b4.PNG)
+
+### Grounded answers
+
+![Cited answer](pics/b5.PNG)
+
+### Tool permissions
+
+![Workspace listing](pics/b6.1.PNG)
+
+![File read](pics/b6.2.PNG)
+
+![Researcher write rejected](pics/b6.3.PNG)
+
+### Three-layer memory
+
+![Memory recall](pics/b7.PNG)
+
+### Agents
+
+![Seeded bug fix](pics/b8.PNG)
+
+### Trajectory scorecard
+
+![Trajectory scorecard](pics/b9.PNG)
